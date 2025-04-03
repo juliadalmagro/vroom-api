@@ -1,21 +1,20 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/config';
 
-const Parametros = sequelize.define(
-  'parametros',
+const TiposUsuarioModel = sequelize.define(
+  'tipos_usuario',
   {
-    id: {
+    idTipoUsuario: {
+      field: 'id',
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
     },
-    chave: {
-      type: DataTypes.STRING(255),
+    TipoUsuario: {
+      field: 'nome',
+      type: DataTypes.STRING(20),
       allowNull: false,
-    },
-    valor: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
+      unique: true,
     },
   },
 
@@ -25,6 +24,7 @@ const Parametros = sequelize.define(
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   },
+
 );
 
-export default Parametros;
+export default TiposUsuarioModel;

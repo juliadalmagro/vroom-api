@@ -1,17 +1,20 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/config';
 
-const Cargos = sequelize.define(
-  'cargos',
+const DiasSemana = sequelize.define(
+  'dias_semana',
   {
-    id: {
+    idDiasSemana: {
+      field: 'id',
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    descricao: {
-      type: DataTypes.STRING(255),
+    DiaSemana: {
+      field: 'nome',
+      type: DataTypes.STRING(10),
       allowNull: false,
+      unique: true,
     },
   },
 
@@ -24,4 +27,4 @@ const Cargos = sequelize.define(
 
 );
 
-export default Cargos;
+export default DiasSemana;
