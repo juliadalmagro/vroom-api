@@ -4,7 +4,7 @@ import { sequelize } from '../config/config';
 const DiasSemana = sequelize.define(
   'dias_semana',
   {
-    idDiasSemana: {
+    idDiaSemana: {
       field: 'id',
       type: DataTypes.INTEGER,
       primaryKey: true,
