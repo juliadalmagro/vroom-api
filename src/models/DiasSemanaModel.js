@@ -10,7 +10,7 @@ const DiasSemana = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    DiaSemana: {
+    diaSemana: {
       field: 'nome',
       type: DataTypes.STRING(10),
       allowNull: false,

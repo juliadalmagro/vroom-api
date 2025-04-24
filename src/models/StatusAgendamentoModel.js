@@ -1,16 +1,16 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/config';
 
-const TiposUsuarioModel = sequelize.define(
-  'tipos_usuario',
+const StatusAgendamento = sequelize.define(
+  'status_agendamento',
   {
-    idTipoUsuario: {
+    idStatusAgendamento: {
       field: 'id',
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    tipoUsuario: {
+    status: {
       field: 'nome',
       type: DataTypes.STRING(20),
       allowNull: false,
@@ -27,4 +27,4 @@ const TiposUsuarioModel = sequelize.define(
 
 );
 
-export default TiposUsuarioModel;
+export default StatusAgendamento;

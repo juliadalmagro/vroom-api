@@ -2,7 +2,7 @@ import DiasSemana from '../models/DiasSemanaModel';
 
 const get = async (req, res) => {
   try {
-    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idDiaSemana ? req.params.idDiaSemana.toString().replace(/\D/g, '') : null;
 
     if (!id) {
       const response = await DiasSemana.findAll({
@@ -41,12 +41,12 @@ const get = async (req, res) => {
 
 const create = async (dados, res) => {
   const {
-    idDiaSemana, DiaSemana,
+    idDiaSemana, diaSemana,
   } = dados;
 
   const response = await DiasSemana.create({
     idDiaSemana,
-    DiaSemana,
+    diaSemana,
   });
 
   return res.status(200).send({
@@ -56,13 +56,13 @@ const create = async (dados, res) => {
   });
 };
 
-const update = async (id, dados, res) => {
-  const response = await DiasSemana.findOne({ where: { id } });
+const update = async (idDiaSemana, dados, res) => {
+  const response = await DiasSemana.findOne({ where: { idDiaSemana } });
 
   if (!response) {
     return res.status(200).send({
       type: 'error',
-      message: `Nenhum registro com id ${id} para atualizar`,
+      message: `Nenhum registro com id ${idDiaSemana} para atualizar`,
       data: [],
     });
   }
@@ -74,14 +74,14 @@ const update = async (id, dados, res) => {
   await response.save();
   return res.status(200).send({
     type: 'success',
-    message: `Registro id ${id} atualizado com sucesso`,
+    message: `Registro id ${idDiaSemana} atualizado com sucesso`,
     data: response,
   });
 };
 
 const persist = async (req, res) => {
   try {
-    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idDiaSemana ? req.params.idDiaSemana.toString().replace(/\D/g, '') : null;
 
     if (!id) {
       return await create(req.body, res);
@@ -99,7 +99,7 @@ const persist = async (req, res) => {
 
 const destroy = async (req, res) => {
   try {
-    const id = req.body.id ? req.body.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idDiaSemana ? req.params.idDiaSemana.toString().replace(/\D/g, '') : null;
     if (!id) {
       return res.status(200).send({
         type: 'error',

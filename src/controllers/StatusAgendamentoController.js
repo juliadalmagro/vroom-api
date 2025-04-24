@@ -1,11 +1,11 @@
-import TiposUsuario from '../models/TiposUsuarioModel';
+import StatusAgendamento from '../models/StatusAgendamentoModel';
 
 const get = async (req, res) => {
   try {
-    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idStatusAgendamento ? req.params.idStatusAgendamento.toString().replace(/\D/g, '') : null;
 
     if (!id) {
-      const response = await TiposUsuario.findAll({
+      const response = await StatusAgendamento.findAll({
         order: [['id', 'asc']],
       });
       return res.status(200).send({
@@ -15,7 +15,7 @@ const get = async (req, res) => {
       });
     }
 
-    const response = await TiposUsuario.findOne({ where: { id } });
+    const response = await StatusAgendamento.findOne({ where: { id } });
 
     if (!response) {
       return res.status(200).send({
@@ -41,12 +41,11 @@ const get = async (req, res) => {
 
 const create = async (dados, res) => {
   const {
-    idTipoUsuario, tipoUsuario,
+    status,
   } = dados;
 
-  const response = await TiposUsuario.create({
-    idTipoUsuario,
-    tipoUsuario,
+  const response = await StatusAgendamento.create({
+    status,
   });
 
   return res.status(200).send({
@@ -57,7 +56,7 @@ const create = async (dados, res) => {
 };
 
 const update = async (id, dados, res) => {
-  const response = await TiposUsuario.findOne({ where: { id } });
+  const response = await StatusAgendamento.findOne({ where: { id } });
 
   if (!response) {
     return res.status(200).send({
@@ -81,7 +80,7 @@ const update = async (id, dados, res) => {
 
 const persist = async (req, res) => {
   try {
-    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idStatusAgendamento ? req.params.idStatusAgendamento.toString().replace(/\D/g, '') : null;
 
     if (!id) {
       return await create(req.body, res);
@@ -99,7 +98,7 @@ const persist = async (req, res) => {
 
 const destroy = async (req, res) => {
   try {
-    const id = req.params.idTipoUsuario ? req.params.idTipoUsuario.toString().replace(/\D/g, '') : null;
+    const id = req.params.idStatusAgendamento ? req.params.idStatusAgendamento.toString().replace(/\D/g, '') : null;
     if (!id) {
       return res.status(200).send({
         type: 'error',
@@ -108,7 +107,7 @@ const destroy = async (req, res) => {
       });
     }
 
-    const response = await TiposUsuario.findOne({ where: { id } });
+    const response = await StatusAgendamento.findOne({ where: { id } });
 
     if (!response) {
       return res.status(200).send({

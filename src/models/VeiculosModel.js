@@ -1,18 +1,23 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/config';
 
-const TiposUsuarioModel = sequelize.define(
-  'tipos_usuario',
+const Veiculo = sequelize.define(
+  'veiculos',
   {
-    idTipoUsuario: {
+    idVeiculo: {
       field: 'id',
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    tipoUsuario: {
-      field: 'nome',
-      type: DataTypes.STRING(20),
+    modeloVeiculo: {
+      field: 'modelo',
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    placaVeiculo: {
+      field: 'placa',
+      type: DataTypes.STRING(10),
       allowNull: false,
       unique: true,
     },
@@ -27,4 +32,4 @@ const TiposUsuarioModel = sequelize.define(
 
 );
 
-export default TiposUsuarioModel;
+export default Veiculo;

@@ -1,11 +1,11 @@
-import TiposUsuario from '../models/TiposUsuarioModel';
+import HorariosTrabalho from '../models/HorariosTrabalhoModel';
 
 const get = async (req, res) => {
   try {
-    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idHorarioTrabalho ? req.params.idHorarioTrabalho.toString().replace(/\D/g, '') : null;
 
     if (!id) {
-      const response = await TiposUsuario.findAll({
+      const response = await HorariosTrabalho.findAll({
         order: [['id', 'asc']],
       });
       return res.status(200).send({
@@ -15,7 +15,7 @@ const get = async (req, res) => {
       });
     }
 
-    const response = await TiposUsuario.findOne({ where: { id } });
+    const response = await HorariosTrabalho.findOne({ where: { id } });
 
     if (!response) {
       return res.status(200).send({
@@ -41,12 +41,11 @@ const get = async (req, res) => {
 
 const create = async (dados, res) => {
   const {
-    idTipoUsuario, tipoUsuario,
+    horaInicioHorarioTrabalho, horaFimHorarioTrabalho, idDiaSemana, idInstrutor,
   } = dados;
 
-  const response = await TiposUsuario.create({
-    idTipoUsuario,
-    tipoUsuario,
+  const response = await HorariosTrabalho.create({
+    horaInicioHorarioTrabalho, horaFimHorarioTrabalho, idDiaSemana, idInstrutor,
   });
 
   return res.status(200).send({
@@ -56,13 +55,13 @@ const create = async (dados, res) => {
   });
 };
 
-const update = async (id, dados, res) => {
-  const response = await TiposUsuario.findOne({ where: { id } });
+const update = async (idHorarioTrabalho, dados, res) => {
+  const response = await HorariosTrabalho.findOne({ where: { idHorarioTrabalho } });
 
   if (!response) {
     return res.status(200).send({
       type: 'error',
-      message: `Nenhum registro com id ${id} para atualizar`,
+      message: `Nenhum registro com id ${idHorarioTrabalho} para atualizar`,
       data: [],
     });
   }
@@ -74,14 +73,14 @@ const update = async (id, dados, res) => {
   await response.save();
   return res.status(200).send({
     type: 'success',
-    message: `Registro id ${id} atualizado com sucesso`,
+    message: `Registro id ${idHorarioTrabalho} atualizado com sucesso`,
     data: response,
   });
 };
 
 const persist = async (req, res) => {
   try {
-    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idHorarioTrabalho ? req.params.idHorarioTrabalho.toString().replace(/\D/g, '') : null;
 
     if (!id) {
       return await create(req.body, res);
@@ -99,7 +98,7 @@ const persist = async (req, res) => {
 
 const destroy = async (req, res) => {
   try {
-    const id = req.params.idTipoUsuario ? req.params.idTipoUsuario.toString().replace(/\D/g, '') : null;
+    const id = req.params.idHorarioTrabalho ? req.params.idHorarioTrabalho.toString().replace(/\D/g, '') : null;
     if (!id) {
       return res.status(200).send({
         type: 'error',
@@ -108,7 +107,7 @@ const destroy = async (req, res) => {
       });
     }
 
-    const response = await TiposUsuario.findOne({ where: { id } });
+    const response = await HorariosTrabalho.findOne({ where: { id } });
 
     if (!response) {
       return res.status(200).send({

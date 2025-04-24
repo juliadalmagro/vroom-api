@@ -1,11 +1,11 @@
-import TiposUsuario from '../models/TiposUsuarioModel';
+import Usuario from '../models/UsuariosModel';
 
 const get = async (req, res) => {
   try {
-    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idUsuario ? req.params.idUsuario.toString().replace(/\D/g, '') : null;
 
     if (!id) {
-      const response = await TiposUsuario.findAll({
+      const response = await Usuario.findAll({
         order: [['id', 'asc']],
       });
       return res.status(200).send({
@@ -15,7 +15,7 @@ const get = async (req, res) => {
       });
     }
 
-    const response = await TiposUsuario.findOne({ where: { id } });
+    const response = await Usuario.findOne({ where: { id } });
 
     if (!response) {
       return res.status(200).send({
@@ -41,12 +41,11 @@ const get = async (req, res) => {
 
 const create = async (dados, res) => {
   const {
-    idTipoUsuario, tipoUsuario,
+    nomeUsuario, cpfUsuario, emailUsuario, senhaUsuario, usuarioTipoUsuario,
   } = dados;
 
-  const response = await TiposUsuario.create({
-    idTipoUsuario,
-    tipoUsuario,
+  const response = await Usuario.create({
+    nomeUsuario, cpfUsuario, emailUsuario, senhaUsuario, usuarioTipoUsuario,
   });
 
   return res.status(200).send({
@@ -57,7 +56,7 @@ const create = async (dados, res) => {
 };
 
 const update = async (id, dados, res) => {
-  const response = await TiposUsuario.findOne({ where: { id } });
+  const response = await Usuario.findOne({ where: { id } });
 
   if (!response) {
     return res.status(200).send({
@@ -99,7 +98,7 @@ const persist = async (req, res) => {
 
 const destroy = async (req, res) => {
   try {
-    const id = req.params.idTipoUsuario ? req.params.idTipoUsuario.toString().replace(/\D/g, '') : null;
+    const id = req.params.idUsuario ? req.params.idUsuario.toString().replace(/\D/g, '') : null;
     if (!id) {
       return res.status(200).send({
         type: 'error',
@@ -108,7 +107,7 @@ const destroy = async (req, res) => {
       });
     }
 
-    const response = await TiposUsuario.findOne({ where: { id } });
+    const response = await Usuario.findOne({ where: { id } });
 
     if (!response) {
       return res.status(200).send({
