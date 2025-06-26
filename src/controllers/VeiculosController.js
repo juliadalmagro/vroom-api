@@ -100,7 +100,7 @@ const destroy = async (req, res) => {
   try {
     const id = req.params.idVeiculo ? req.params.idVeiculo.toString().replace(/\D/g, '') : null;
     if (!id) {
-      return res.status(200).send({
+      return res.status(500).send({
         type: 'error',
         message: 'Informe um id para deletar o registro',
         data: [],
@@ -110,7 +110,7 @@ const destroy = async (req, res) => {
     const response = await Veiculo.findOne({ where: { id } });
 
     if (!response) {
-      return res.status(200).send({
+      return res.status(500).send({
         type: 'error',
         message: `Nenhum registro com id ${id} para deletar`,
         data: [],
@@ -124,7 +124,7 @@ const destroy = async (req, res) => {
       data: [],
     });
   } catch (error) {
-    return res.status(200).send({
+    return res.status(500).send({
       type: 'error',
       message: 'Ops! Ocorreu um erro',
       error: error.message,

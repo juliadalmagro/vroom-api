@@ -1,11 +1,11 @@
-import HorariosTrabalho from '../models/HorariosTrabalhoModel';
+import HorariosAula from '../models/HorariosAulaModel';
 
 const get = async (req, res) => {
   try {
-    const id = req.params.idHorarioTrabalho ? req.params.idHorarioTrabalho.toString().replace(/\D/g, '') : null;
+    const id = req.params.idHorarioAula ? req.params.idHorarioAula.toString().replace(/\D/g, '') : null;
 
     if (!id) {
-      const response = await HorariosTrabalho.findAll({
+      const response = await HorariosAula.findAll({
         order: [['id', 'asc']],
       });
       return res.status(200).send({
@@ -15,13 +15,13 @@ const get = async (req, res) => {
       });
     }
 
-    const response = await HorariosTrabalho.findOne({ where: { id } });
+    const response = await HorariosAula.findOne({ where: { id } });
 
     if (!response) {
       return res.status(200).send({
         type: 'error',
         message: `Nenhum registro com id ${id}`,
-        data: [],
+        data: response.error,
       });
     }
 
@@ -41,11 +41,11 @@ const get = async (req, res) => {
 
 const create = async (dados, res) => {
   const {
-    horaInicioHorarioTrabalho, horaFimHorarioTrabalho, idDiaSemana, idInstrutor,
+    hora,
   } = dados;
 
-  const response = await HorariosTrabalho.create({
-    horaInicioHorarioTrabalho, horaFimHorarioTrabalho, idDiaSemana, idInstrutor,
+  const response = await HorariosAula.create({
+    hora,
   });
 
   return res.status(200).send({
@@ -55,13 +55,13 @@ const create = async (dados, res) => {
   });
 };
 
-const update = async (idHorarioTrabalho, dados, res) => {
-  const response = await HorariosTrabalho.findOne({ where: { idHorarioTrabalho } });
+const update = async (idHorarioAula, dados, res) => {
+  const response = await HorariosAula.findOne({ where: { idHorarioAula } });
 
   if (!response) {
     return res.status(200).send({
       type: 'error',
-      message: `Nenhum registro com id ${idHorarioTrabalho} para atualizar`,
+      message: `Nenhum registro com id ${idHorarioAula} para atualizar`,
       data: [],
     });
   }
@@ -73,14 +73,14 @@ const update = async (idHorarioTrabalho, dados, res) => {
   await response.save();
   return res.status(200).send({
     type: 'success',
-    message: `Registro id ${idHorarioTrabalho} atualizado com sucesso`,
+    message: `Registro id ${idHorarioAula} atualizado com sucesso`,
     data: response,
   });
 };
 
 const persist = async (req, res) => {
   try {
-    const id = req.params.idHorarioTrabalho ? req.params.idHorarioTrabalho.toString().replace(/\D/g, '') : null;
+    const id = req.params.idHorarioAula ? req.params.idHorarioAula.toString().replace(/\D/g, '') : null;
 
     if (!id) {
       return await create(req.body, res);
@@ -98,7 +98,7 @@ const persist = async (req, res) => {
 
 const destroy = async (req, res) => {
   try {
-    const id = req.params.idHorarioTrabalho ? req.params.idHorarioTrabalho.toString().replace(/\D/g, '') : null;
+    const id = req.params.idHorarioAula ? req.params.idHorarioAula.toString().replace(/\D/g, '') : null;
     if (!id) {
       return res.status(200).send({
         type: 'error',
@@ -107,7 +107,7 @@ const destroy = async (req, res) => {
       });
     }
 
-    const response = await HorariosTrabalho.findOne({ where: { id } });
+    const response = await HorariosAula.findOne({ where: { id } });
 
     if (!response) {
       return res.status(200).send({

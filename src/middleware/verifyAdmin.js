@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import Usuarios from '../models/Usuarios';
-import Cargos from '../models/Cargos';
+import Usuarios from '../models/UsuariosModel';
+import TiposUsuarioModel from '../models/TiposUsuarioModel';
 
 export default async (req, res, next) => {
   try {
@@ -25,7 +25,7 @@ export default async (req, res, next) => {
     console.log(1);
     const usuarios = await Usuarios.findOne({
       where: {
-        id: decodedToken.userId,
+        id: decodedToken.idUsuario,
       },
       include: [{
         model: Cargos,

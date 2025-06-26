@@ -1,3 +1,4 @@
+import { sequelize } from '../config/config';
 import Usuario from '../models/UsuariosModel';
 
 const get = async (req, res) => {
@@ -59,7 +60,7 @@ const update = async (id, dados, res) => {
   const response = await Usuario.findOne({ where: { id } });
 
   if (!response) {
-    return res.status(200).send({
+    return res.status(500).send({
       type: 'error',
       message: `Nenhum registro com id ${id} para atualizar`,
       data: [],
@@ -80,7 +81,7 @@ const update = async (id, dados, res) => {
 
 const persist = async (req, res) => {
   try {
-    const id = req.params.id ? req.params.id.toString().replace(/\D/g, '') : null;
+    const id = req.params.idUsuario ? req.params.idUsuarioa.toString().replace(/\D/g, '') : null;
 
     if (!id) {
       return await create(req.body, res);
@@ -88,7 +89,7 @@ const persist = async (req, res) => {
 
     return await update(id, req.body, res);
   } catch (error) {
-    return res.status(200).send({
+    return res.status(500).send({
       type: 'error',
       message: 'Ops! Ocorreu um erro',
       error,
@@ -132,8 +133,108 @@ const destroy = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { emailUsuario, senhaUsuario } = req.body;
+  console.log(req.body);
+
+  if (!emailUsuario || !senhaUsuario) {
+    return res.status(400).send({
+      type: 'error',
+      message: 'Email e/ou senha não fornecidos na requisição.',
+    });
+  }
+
+  try {
+    const response = await sequelize.query(
+      `SELECT 
+        u.id AS "idUsuario",
+        u.email AS "emailUsuario",
+        u.senha_hash AS "senhaUsuario",
+        t.id AS "idTipoUsuario",
+        t.nome AS "nomeTipoUsuario"
+      FROM usuarios u
+      JOIN tipos_usuario t ON u.tipo_id = t.id
+      WHERE u.email = :emailUsuario
+        AND u.senha_hash = :senhaUsuario;`,
+      {
+        replacements: { emailUsuario, senhaUsuario },
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+
+    if (response.length === 0) {
+      return res.status(404).send({
+        type: 'error',
+        message: 'Usuário não encontrado ou credenciais inválidas.',
+      });
+    }
+
+    return res.status(200).send({
+      message: 'Usuário autenticado com sucesso!',
+      data: response[0],
+    });
+  } catch (error) {
+    return res.status(500).send({
+      type: 'error',
+      message: 'Erro ao buscar o usuário.',
+      error: error.message,
+    });
+  }
+};
+
+const getAluno = async (_, res) => {
+  try {
+    const response = await Usuario.findAll({
+      where: { usuarioTipoUsuario: 1 }
+    });
+    if (response && response.length > 0) {
+      return res.status(200).send({
+        message: 'Dados Encontrados!',
+        data: response,
+      });
+    }
+    return res.status(404).send({
+      type: 'error',
+      message: 'Nenhum aluno encontrado.',
+    });
+  } catch (error) {
+    return res.status(500).send({
+      type: 'error',
+      message: 'Erro ao buscar alunos.',
+      error: error.message,
+    });
+  }
+};
+
+const getInstrutor = async (_, res) => {
+  try {
+    const response = await Usuario.findAll({
+      where: { usuarioTipoUsuario: 2 }
+    });
+    if (response && response.length > 0) {
+      return res.status(200).send({
+        message: 'Dados Encontrados!',
+        data: response,
+      });
+    }
+    return res.status(404).send({
+      type: 'error',
+      message: 'Nenhum instrutor encontrado.',
+    });
+  } catch (error) {
+    return res.status(500).send({
+      type: 'error',
+      message: 'Erro ao buscar instrutor.',
+      error: error.message,
+    });
+  }
+};
+
 export default {
   get,
   persist,
   destroy,
+  getAluno,
+  getInstrutor,
+  login,
 };

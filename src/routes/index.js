@@ -3,8 +3,9 @@ import DiasSemanaRoute from './DiasSemanaRoute';
 import TiposUsuarioRoute from './TiposUsuarioRoute';
 import UsuarioRoute from './UsuariosRoute';
 import VeiculosRoute from './VeiculosRoute';
-import HorariosTrabalhoRoute from './HorariosTrabalhoRoute';
+import HorariosAulaRoute from './HorariosAulaRoute';
 import AgendamentosRoute from './AgendamentosRoute';
+import InstrutorHorariosRoute from './InstrutorHorariosRoute';
 
 function Routes(app) {
   TiposUsuarioRoute(app);
@@ -12,8 +13,9 @@ function Routes(app) {
   StatusAgendamentoRoute(app);
   UsuarioRoute(app);
   VeiculosRoute(app);
-  HorariosTrabalhoRoute(app);
+  HorariosAulaRoute(app);
   AgendamentosRoute(app);
+  InstrutorHorariosRoute(app);
 }
 
 export default Routes;

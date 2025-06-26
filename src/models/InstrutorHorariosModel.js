@@ -1,23 +1,17 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/config';
 import Usuario from './UsuariosModel';
-import Veiculo from './VeiculosModel';
 import HorariosAula from './HorariosAulaModel';
-import StatusAgendamento from './StatusAgendamentoModel';
+import DiasSemana from './DiasSemanaModel';
 
-const Agendamentos = sequelize.define(
-  'agendamentos',
+const InstrutorHorarios = sequelize.define(
+  'instrutor_horarios',
   {
-    idAgendamento: {
+    idInstrutorHorario: {
       field: 'id',
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-    },
-    data: {
-      field: 'data',
-      type: DataTypes.DATE,
-      allowNull: false,
     },
   },
 
@@ -30,40 +24,29 @@ const Agendamentos = sequelize.define(
 
 );
 
-Agendamentos.belongsTo(Usuario, {
-  as: 'alunoId',
-  onUpdate: 'NO ACTION',
-  onDelete: 'NO ACTION',
-  foreignKey: {
-    name: 'idAluno',
-    field: 'aluno_id',
-  },
-  allowNull: false,
-});
-
-Agendamentos.belongsTo(Usuario, {
+InstrutorHorarios.belongsTo(Usuario, {
   as: 'instrutorId',
   onUpdate: 'NO ACTION',
   onDelete: 'NO ACTION',
   foreignKey: {
-    name: 'idInstrutor',
+    name: 'idUsuario',
     field: 'instrutor_id',
   },
   allowNull: false,
 });
 
-Agendamentos.belongsTo(Veiculo, {
-  as: 'veiculoId',
+InstrutorHorarios.belongsTo(DiasSemana, {
+  as: 'diaId',
   onUpdate: 'NO ACTION',
   onDelete: 'NO ACTION',
   foreignKey: {
-    name: 'idVeiculo',
-    field: 'veiculo_id',
+    name: 'idDiaSemana',
+    field: 'dia_id',
   },
   allowNull: false,
 });
 
-Agendamentos.belongsTo(HorariosAula, {
+InstrutorHorarios.belongsTo(HorariosAula, {
   as: 'horarioId',
   onUpdate: 'NO ACTION',
   onDelete: 'NO ACTION',
@@ -74,4 +57,4 @@ Agendamentos.belongsTo(HorariosAula, {
   allowNull: false,
 });
 
-export default Agendamentos;
+export default InstrutorHorarios;
